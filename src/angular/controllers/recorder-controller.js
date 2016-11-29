@@ -170,7 +170,15 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
   };
 
   control.removeAudioPlayer = function () {
+
+    // remove audio player
     document.getElementById(audioObjId).remove();
+
+    // remove blob image
+    control.audioModel = null;
+
+    // init counter
+    control.elapsedTime = 0;
   };
 
 
