@@ -169,6 +169,10 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
     return service.isCordova ? cordovaMedia.player : document.getElementById(audioObjId);
   };
 
+  control.removeAudioPlayer = function () {
+    document.getElementById(audioObjId).remove();
+  };
+
 
   control.startRecord = function () {
     if (!service.isAvailable()) {
