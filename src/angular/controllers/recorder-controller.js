@@ -181,6 +181,11 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
     control.elapsedTime = 0;
   };
 
+  control.validateSpeech = function () {
+    if (control.audioModel !== undefined && control.audioModel !== null)
+        control.submitSound({speech: control.audioModel});
+  };
+
 
   control.startRecord = function () {
     if (!service.isAvailable()) {
