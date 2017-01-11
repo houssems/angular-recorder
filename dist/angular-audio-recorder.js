@@ -14,6 +14,21 @@ angular.module('angularAudioRecorder', [
   'angularAudioRecorder.controllers',
   'angularAudioRecorder.directives'
 ]);
+angular.module('angularAudioRecorder.config', [])
+  .constant('recorderScriptUrl', (function () {
+    var scripts = document.getElementsByTagName('script');
+    var myUrl = scripts[scripts.length - 1].getAttribute('src');
+    var path = myUrl.substr(0, myUrl.lastIndexOf('/') + 1);
+    var a = document.createElement('a');
+    a.href = path;
+    return a.href;
+  }()))
+  .constant('recorderPlaybackStatus', {
+    STOPPED: 0,
+    PLAYING: 1,
+    PAUSED: 2
+  })
+;
 angular.module('angularAudioRecorder.controllers', [
   'angularAudioRecorder.config',
   'angularAudioRecorder.services'
@@ -130,7 +145,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
 
   var embedPlayer = function (blob) {
     if (document.getElementById(audioObjId) == null) {
-      element.append('<audio type="audio/mp3" id="' + audioObjId + '"></audio>');
+      element.append('<audio type="audio/m4a" id="' + audioObjId + '"></audio>');
 
       var audioPlayer = document.getElementById(audioObjId);
       if (control.showPlayer) {
@@ -979,11 +994,11 @@ angular.module('angularAudioRecorder.services')
           url += Date.now() + '_recordedAudio_' + id.replace('/[^A-Za-z0-9_-]+/gi', '-');
           switch (window.cordova.platformId) {
             case 'ios':
-              url += '.wav';
+              url += '.m4a';
               break;
 
             case 'android':
-              url += '.amr';
+              url += '.m4a';
               break;
 
             case 'wp':
@@ -1030,22 +1045,7 @@ angular.module('angularAudioRecorder.services')
 
       return factory;
     }
-  ]);
-angular.module('angularAudioRecorder.config', [])
-  .constant('recorderScriptUrl', (function () {
-    var scripts = document.getElementsByTagName('script');
-    var myUrl = scripts[scripts.length - 1].getAttribute('src');
-    var path = myUrl.substr(0, myUrl.lastIndexOf('/') + 1);
-    var a = document.createElement('a');
-    a.href = path;
-    return a.href;
-  }()))
-  .constant('recorderPlaybackStatus', {
-    STOPPED: 0,
-    PLAYING: 1,
-    PAUSED: 2
-  })
-;})();
+  ]);})();
 (function (global) {
   'use strict';
 

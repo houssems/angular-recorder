@@ -31,11 +31,11 @@ angular.module('angularAudioRecorder.services')
           url += Date.now() + '_recordedAudio_' + id.replace('/[^A-Za-z0-9_-]+/gi', '-');
           switch (window.cordova.platformId) {
             case 'ios':
-              url += '.wav';
+              url += '.m4a';
               break;
 
             case 'android':
-              url += '.amr';
+              url += '.m4a';
               break;
 
             case 'wp':

@@ -112,7 +112,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
 
   var embedPlayer = function (blob) {
     if (document.getElementById(audioObjId) == null) {
-      element.append('<audio type="audio/mp3" id="' + audioObjId + '"></audio>');
+      element.append('<audio type="audio/m4a" id="' + audioObjId + '"></audio>');
 
       var audioPlayer = document.getElementById(audioObjId);
       if (control.showPlayer) {
