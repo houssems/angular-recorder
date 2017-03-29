@@ -127,6 +127,11 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
         }
       });
 
+      audioPlayer.addEventListener("timeupdate", function () {
+
+        status.playBackTime = (this.currentTime / this.duration) * 100;
+      }, false);
+
 
       audioPlayer.addEventListener("playing", function (e) {
         if (status.isPaused) {
