@@ -50,6 +50,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
       isDenied: null,
       isSwfLoaded: null,
       isConverting: false,
+      playBackTime: 0,
       get isPlaying() {
         return status.playback === PLAYBACK.PLAYING;
       },
@@ -130,6 +131,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
       audioPlayer.addEventListener("timeupdate", function () {
 
         status.playBackTime = (this.currentTime / this.duration) * 100;
+        scopeApply();
       }, false);
 
 
