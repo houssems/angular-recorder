@@ -322,16 +322,40 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
     }
   };
 
+  var mediaTimer;
+
   control.playbackRecording = function () {
     if (status.isPlaying || !service.isAvailable() || status.isRecording || !control.audioModel) {
       return false;
     }
 
     if (service.isCordova) {
-      cordovaMedia.player = new Media(cordovaMedia.url, playbackOnEnded, function () {
-        console.log('Playback failed');
-      });
+      if(cordovaMedia.player === null)
+        cordovaMedia.player = new Media(cordovaMedia.url, playbackOnEnded, function () {
+          console.log('Playback failed');
+        });
       cordovaMedia.player.play();
+
+      mediaTimer = setInterval(function() {
+        // get my_media position
+        cordovaMedia.player.getCurrentPosition(
+            // success callback
+            function(position) {
+              if (position > -1) {
+                status.playBackTime = (position / cordovaMedia.player.getDuration()) * 100;
+                status.currentTime = position;
+                scopeApply();
+
+                if (position == cordovaMedia.player.getDuration()) {
+                  clearInterval(mediaTimer);
+                  mediaTimer = null;
+                }
+
+              }
+            }
+        );
+      }, 1000);
+
       playbackOnStart();
     } else {
       control.getAudioPlayer().play();
