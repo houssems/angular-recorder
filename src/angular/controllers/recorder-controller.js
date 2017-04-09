@@ -215,8 +215,10 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
     var start = function () {
       if (service.isCordova) {
         cordovaMedia.url = recorderUtils.cordovaAudioUrl(control.id);
+
+        var url = (window.cordova.platformId === 'ios') ? cordovaMedia.url.split('/').pop() : cordovaMedia.url;
         //mobile app needs wav extension to save recording
-        cordovaMedia.recorder = new Media(cordovaMedia.url, function () {
+        cordovaMedia.recorder = new Media(url, function () {
           console.log('Media successfully played');
         }, function (err) {
           console.log('Media could not be launched' + err.code, err);
@@ -301,6 +303,7 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
     //To stop recording
     if (service.isCordova) {
       cordovaMedia.recorder.stopRecord();
+      cordovaMedia.player = null;
       window.resolveLocalFileSystemURL(cordovaMedia.url, function (entry) {
         entry.file(function (blob) {
           completed(blob);
@@ -330,8 +333,11 @@ var RecorderController = function (element, service, recorderUtils, $scope, $tim
     }
 
     if (service.isCordova) {
+
+      var url = (window.cordova.platformId === 'ios') ? cordovaMedia.url.split('/').pop() : cordovaMedia.url;
+
       if(cordovaMedia.player === null)
-        cordovaMedia.player = new Media(cordovaMedia.url, playbackOnEnded, function () {
+        cordovaMedia.player = new Media(url, playbackOnEnded, function () {
           console.log('Playback failed');
         });
       cordovaMedia.player.play();
